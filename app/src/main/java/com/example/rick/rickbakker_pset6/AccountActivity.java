@@ -47,7 +47,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     //Standard Firebase code.
-    public void signIn(String email, String password) {
+    public void signIn(String email, final String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new
                 OnCompleteListener<AuthResult>() {
             @Override
@@ -55,31 +55,30 @@ public class AccountActivity extends AppCompatActivity {
                 //Create new intent and get extras from the intent.
                 Intent intent = getIntent();
                 Bundle bundle = intent.getExtras();
-                //If the bundle is empty, user signed in via home.
-                if (bundle == null) {
-                    Toast.makeText(getApplicationContext(), R.string.sign_in_successful, Toast
-                            .LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-                    //If the bundle is not empty, user signed in from the moodlist
-                    // and must be redirected back to the personal moodlist after the user signed
-                    // in.
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.sign_in_successful, Toast
-                            .LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
-                }
-
                 //If sign in fails, display a message to the user. If sign in succeeds
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), R.string.sign_in_failed, Toast
                             .LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                    mPassword.getText().clear();
+                } else {
+                    //If the bundle is empty, user signed in via home.
+                    if (bundle == null) {
+                        Toast.makeText(getApplicationContext(), R.string.sign_in_successful,
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        //If the bundle is not empty, user signed in from the moodlist
+                        // and must be redirected back to the personal moodlist after the user
+                        // signed
+                        // in.
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.sign_in_successful,
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
+                    }
                 }
             }
         });
