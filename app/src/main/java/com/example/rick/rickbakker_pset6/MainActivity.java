@@ -20,10 +20,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.action_item2:
                     intent = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case R.id.action_item3:
                     intent = new Intent(getApplicationContext(), RegisterActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
             }
             return false;
@@ -52,8 +54,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.account:
             startActivity(new Intent(MainActivity.this, AccountActivity.class));
+            finish();
             return (true);
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

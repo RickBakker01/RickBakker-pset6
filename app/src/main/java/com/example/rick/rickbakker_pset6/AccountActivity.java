@@ -44,7 +44,11 @@ public class AccountActivity extends AppCompatActivity {
         mPassword = (EditText) findViewById(R.id.user_password);
 
         mAuth = FirebaseAuth.getInstance();
+        auth();
 
+    }
+
+    public void auth(){
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
