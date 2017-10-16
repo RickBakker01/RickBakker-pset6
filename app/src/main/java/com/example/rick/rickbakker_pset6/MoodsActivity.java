@@ -9,12 +9,15 @@ import android.view.MenuItem;
 
 public class MoodsActivity extends AppCompatActivity {
 
+    //Makes a new listener for the bottom navigation
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
             .OnNavigationItemSelectedListener() {
 
         Intent intent;
 
+        //When a button is pressed from the bottom navigation, the switch decides which one.
+        //With a new intent, a new activity is started.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -39,11 +42,14 @@ public class MoodsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moods);
 
+        //navigation is set to the bottom navigation.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.moods).setChecked(true);
     }
 
+    //If the back button is pressed, the application goes to MainActivity.
     @Override
     public void onBackPressed() {
         finish();

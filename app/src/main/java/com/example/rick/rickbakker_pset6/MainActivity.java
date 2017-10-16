@@ -10,9 +10,15 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    //Makes a new listener for the bottom navigation.
+    private BottomNavigationView.OnNavigationItemSelectedListener
+            mOnNavigationItemSelectedListener = new BottomNavigationView
+            .OnNavigationItemSelectedListener() {
+
         Intent intent;
 
+        //When a button is pressed from the bottom navigation, the switch decides which one.
+        //With a new intent, a new activity is started.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -36,19 +42,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        //navigation is set to the bottom navigation.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    //top menu show button
+    //Shows the account button.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu. This adds items to the action bar.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    //top menu button
+    //Top menu button. If selected, AccountActivity opens.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -60,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
         return (super.onOptionsItemSelected(item));
     }
 
+    //If the back button is pressed, the application exits.
     @Override
     public void onBackPressed() {
         finish();
+        super.onBackPressed();
     }
 }

@@ -15,5 +15,13 @@
     <string name="moods">moods</string>
     <string name="my_mood">my mood</string>
 
+    <!-- Strings from AccountActivity -->
+    <string name="please_login">Please login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="or">or</string>
+    <string name="register">Register</string>
+
 
 </resources>

@@ -12,13 +12,19 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MyMoodActivity extends AppCompatActivity {
 
+    //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    //Makes a new listener for the bottom navigation.
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
             .OnNavigationItemSelectedListener() {
+
         Intent intent;
 
+        //When a button is pressed from the bottom navigation, the switch decides which one.
+        //With a new intent, a new activity is started.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -42,35 +48,44 @@ public class MyMoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_mood);
 
+        //navigation is set to the bottom navigation.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.my_mood).setChecked(true);
 
+        //Standard Firebase code
         mAuth = FirebaseAuth.getInstance();
+        //auth-method is called.
         auth();
     }
 
+    //Standard Firebase code. Removed else from if clause.
     private void auth() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // User is signed out
+                    //If the user is signed in, a new int is given to the intent, and
+                    // AccountActivity is started.
                     int userSignIn = 1;
                     startActivity(new Intent(getApplicationContext(), AccountActivity.class)
                             .putExtra("user", userSignIn));
+                    finish();
                 }
             }
         };
     }
 
+    //Standard Firebase code.
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    //Standard Firebase code.
     @Override
     public void onStop() {
         super.onStop();
@@ -79,6 +94,7 @@ public class MyMoodActivity extends AppCompatActivity {
         }
     }
 
+    //If the back button is pressed, the application goes to MainActivity.
     @Override
     public void onBackPressed() {
         finish();
