@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_item1"
+        android:id="@+id/home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="home"/>
+        android:title="@string/home"/>
     <item
-        android:id="@+id/action_item2"
+        android:id="@+id/moods"
         android:icon="@drawable/ic_playlist_add_black_24dp"
-        android:title="moods"/>
+        android:title="@string/moods"/>
     <item
-        android:id="@+id/action_item3"
+        android:id="@+id/my_mood"
         android:icon="@drawable/ic_mood_black_24dp"
-        android:title="my mood"/>
+        android:title="@string/my_mood"/>
 
 </menu>

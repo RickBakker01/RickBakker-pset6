@@ -10,20 +10,19 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         Intent intent;
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_item2:
+                case R.id.moods:
                     intent = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent);
                     finish();
                     break;
-                case R.id.action_item3:
-                    intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                case R.id.my_mood:
+                    intent = new Intent(getApplicationContext(), MyMoodActivity.class);
                     startActivity(intent);
                     finish();
                     break;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.account:
-                startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                 finish();
                 return (true);
         }

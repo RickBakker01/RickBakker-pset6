@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +22,8 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".MoodsActivity"></activity>
+        <activity android:name=".MoodsActivity" />
+        <activity android:name=".MyMoodActivity"/>
     </application>
 
 </manifest>

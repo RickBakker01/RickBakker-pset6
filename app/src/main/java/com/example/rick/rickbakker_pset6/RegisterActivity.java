@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -38,38 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordConfirm = (EditText) findViewById(R.id.password_confirm);
 
         mAuth = FirebaseAuth.getInstance();
-        auth();
-    }
-
-    private void auth() {
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("onAuth1", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d("onAuth2", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     public void createAccount(String email, String password) {
@@ -83,12 +49,12 @@ public class RegisterActivity extends AppCompatActivity {
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     if (!task.getException().getMessage().equals("")) {
-                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     finish();
-                    Toast.makeText(RegisterActivity.this, R.string.registration_successful, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    Toast.makeText(getApplicationContext(), R.string.registration_successful, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }
         });
@@ -96,9 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         finish();
-        startActivity(new Intent(RegisterActivity.this, AccountActivity.class));
+        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
     }
 
     private class myListener implements View.OnClickListener {
@@ -113,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
                     String password = mPassword.getText().toString();
 
                     createAccount(email, password);
-
                 } else {
                     mPasswordConfirm.getText().clear();
                     Toast.makeText(RegisterActivity.this, R.string.different_passwords, Toast.LENGTH_SHORT).show();
