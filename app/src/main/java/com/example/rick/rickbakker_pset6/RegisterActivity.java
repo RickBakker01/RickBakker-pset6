@@ -74,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void createAccount(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ConstantConditions"})
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
