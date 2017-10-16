@@ -1,12 +1,10 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +46,7 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
-    public void auth(){
+    private void auth() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -56,7 +54,7 @@ public class AccountActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     finish();
-                    startActivity(new Intent(AccountActivity.this,  UserInfoActivity.class));
+                    startActivity(new Intent(AccountActivity.this, UserInfoActivity.class));
                     Log.d("ASAASD", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
@@ -82,26 +80,28 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     public void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        finish();
-                        startActivity(new Intent(AccountActivity.this,  MainActivity.class));
-                        Log.d("FDSDFSD", "signInWithEmail:onComplete:" + task.isSuccessful());
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                finish();
+                startActivity(new Intent(AccountActivity.this, MainActivity.class));
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("FSDF", "signInWithEmail:failed", task.getException());
-                            Toast.makeText(AccountActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-                            finish();
-                            startActivity(new Intent(AccountActivity.this,  AccountActivity.class));
-                        }
-                    }
-                });
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    Toast.makeText(AccountActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(AccountActivity.this, AccountActivity.class));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(AccountActivity.this, MainActivity.class));
     }
 
     private class myListener implements View.OnClickListener {
@@ -116,17 +116,13 @@ public class AccountActivity extends AppCompatActivity {
                 case R.id.login:
                     String email = mEmail.getText().toString();
                     String password = mPassword.getText().toString();
-                    if (email.matches("") || password.matches("")){
-                        Toast.makeText(AccountActivity.this, R.string.empty,
-                                Toast.LENGTH_SHORT).show();
+                    if (email.matches("") || password.matches("")) {
+                        Toast.makeText(AccountActivity.this, R.string.empty, Toast.LENGTH_SHORT).show();
                     } else {
                         signIn(email, password);
                     }
             }
-
         }
-
     }
-
 }
 

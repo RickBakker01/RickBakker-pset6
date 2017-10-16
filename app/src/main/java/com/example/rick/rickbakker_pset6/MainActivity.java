@@ -1,10 +1,10 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -51,13 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
     //top menu button
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.account:
-            startActivity(new Intent(MainActivity.this, AccountActivity.class));
-            finish();
-            return (true);
-    }
-        return(super.onOptionsItemSelected(item));
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.account:
+                startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                finish();
+                return (true);
+        }
+        return (super.onOptionsItemSelected(item));
     }
 
     @Override
