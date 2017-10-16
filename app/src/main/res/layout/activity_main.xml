@@ -7,6 +7,37 @@
                 android:layout_height="match_parent"
                 tools:context="com.example.rick.rickbakker_pset6.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/headerMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/welcome"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
+
+        <!-- Image taken from https://www.rijksmuseum.nl/nl/pers/beeldmateriaal.
+        Rijksmuseum - 2014 - John Lewis Marshall  -->
+        <ImageView
+            android:id="@+id/imageMain"
+            android:layout_width="wrap_content"
+            android:layout_height="357dp"
+            android:contentDescription="@string/Photo_description"
+            app:srcCompat="@drawable/rijks"/>
+
+        <TextView
+            android:id="@+id/sourceMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Photo_by"
+            android:textSize="12sp"/>
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

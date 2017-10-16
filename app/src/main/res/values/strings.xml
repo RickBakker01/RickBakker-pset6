@@ -23,5 +23,22 @@
     <string name="or">or</string>
     <string name="register">Register</string>
 
+    <!-- Strings from MainActivity -->
+    <string name="welcome">Welcome to the Rijksmuseum Moodapp</string>
+    <string name="Photo_by">Photo by John Lewis Marshall</string>
+    <string name="Photo_description">Photo of the Rijksmuseum</string>
+
+    <!-- Strings from RegisterActivity -->
+    <string name="registerHeader">Please fill in below and click on register to register your account</string>
+    <string name="emailRegister">Email</string>
+    <string name="passwordRegister">Password</string>
+    <string name="confirm_passwordRegister">Confirm password</string>
+    <string name="registerRegister">Register</string>
+
+    <!-- Strings from UserInfoActivity -->
+    <string name="user_info_header">You are currently logged in with your email address:</string>
+    <string name="user">User</string>
+    <string name="log_out">Log out</string>
+
 
 </resources>
