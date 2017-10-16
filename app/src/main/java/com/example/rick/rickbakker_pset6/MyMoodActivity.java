@@ -14,7 +14,9 @@ public class MyMoodActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener
+            mOnNavigationItemSelectedListener = new BottomNavigationView
+            .OnNavigationItemSelectedListener() {
         Intent intent;
 
         @Override
@@ -42,6 +44,7 @@ public class MyMoodActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.getMenu().findItem(R.id.my_mood).setChecked(true);
 
         mAuth = FirebaseAuth.getInstance();
         auth();
@@ -55,7 +58,8 @@ public class MyMoodActivity extends AppCompatActivity {
                 if (user == null) {
                     // User is signed out
                     int userSignIn = 1;
-                    startActivity(new Intent(getApplicationContext(), AccountActivity.class).putExtra("user", userSignIn));
+                    startActivity(new Intent(getApplicationContext(), AccountActivity.class)
+                            .putExtra("user", userSignIn));
                 }
             }
         };
@@ -74,4 +78,11 @@ public class MyMoodActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
 }
+

@@ -74,16 +74,19 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     public void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new
+                OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
                 Intent intent = getIntent();
                 Bundle bundle = intent.getExtras();
-
+                //If the bundle is empty, user signed in via home
                 if (bundle == null) {
                     finish();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                    //If the bundle is not empty, user signed in from the moodlist
+                    // and must be redirected to the personal moodlist
                 } else {
                     finish();
                     startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
@@ -93,7 +96,8 @@ public class AccountActivity extends AppCompatActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.sign_in_failed, Toast
+                            .LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                 }
@@ -112,14 +116,24 @@ public class AccountActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.gotoregister:
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                    Intent intent = getIntent();
+                    Bundle bundle = intent.getExtras();
+                    if (bundle != null) {
+                        int userSignIn = 1;
+                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class)
+                                .putExtra("user", userSignIn));
+                    } else {
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                        break;
+                    }
                     break;
                 case R.id.login:
                     String email = mEmail.getText().toString();
                     String password = mPassword.getText().toString();
                     if (email.matches("") || password.matches("")) {
-                        Toast.makeText(getApplicationContext(), R.string.empty, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.empty, Toast
+                                .LENGTH_SHORT).show();
                     } else {
                         signIn(email, password);
                     }
@@ -127,4 +141,3 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 }
-

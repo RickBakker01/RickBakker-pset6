@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.moods:
-                    intent = new Intent(getApplicationContext(), AccountActivity.class);
+                    intent = new Intent(getApplicationContext(), MoodsActivity.class);
                     startActivity(intent);
                     finish();
                     break;

@@ -21,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mPassword;
     EditText mPasswordConfirm;
     Button register;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -39,7 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void createAccount(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new
+                OnCompleteListener<AuthResult>() {
             @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ConstantConditions"})
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -49,12 +51,23 @@ public class RegisterActivity extends AppCompatActivity {
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     if (!task.getException().getMessage().equals("")) {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    finish();
-                    Toast.makeText(getApplicationContext(), R.string.registration_successful, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    Intent intent = getIntent();
+                    Bundle bundle = intent.getExtras();
+                    if (bundle == null) {
+                        finish();
+                        Toast.makeText(getApplicationContext(), R.string.registration_successful,
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    } else {
+                        finish();
+                        Toast.makeText(getApplicationContext(), R.string.registration_successful,
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
+                    }
                 }
             }
         });
@@ -72,19 +85,26 @@ public class RegisterActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             String email = mEmail.getText().toString();
+            String password = mPassword.getText().toString();
             if (mPassword.length() > 6) {
-
-                if (Objects.equals(mPassword.getText().toString(), mPasswordConfirm.getText().toString())) {
-                    String password = mPassword.getText().toString();
+                if (Objects.equals(mPassword.getText().toString(), mPasswordConfirm.getText()
+                        .toString())) {
 
                     createAccount(email, password);
                 } else {
                     mPasswordConfirm.getText().clear();
-                    Toast.makeText(RegisterActivity.this, R.string.different_passwords, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, R.string.different_passwords, Toast
+                            .LENGTH_SHORT).show();
                 }
             } else {
-                mPasswordConfirm.getText().clear();
-                Toast.makeText(RegisterActivity.this, R.string.to_short, Toast.LENGTH_SHORT).show();
+                if (email.matches("") || password.matches("")) {
+                    Toast.makeText(getApplicationContext(), R.string.empty, Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    mPasswordConfirm.getText().clear();
+                    Toast.makeText(RegisterActivity.this, R.string.to_short, Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         }
     }
