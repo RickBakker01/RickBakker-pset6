@@ -8,8 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
+
+    int userint = 0;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
     //Makes a new listener for the bottom navigation.
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
@@ -40,12 +47,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         //navigation is set to the bottom navigation.
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Standard Firebase code.
+        mAuth = FirebaseAuth.getInstance();
+
+        //Auth-method is called.
+        auth();
     }
 
     //Shows the account button.
@@ -61,7 +73,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.account:
-                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                //If userint is set to 1, user is signed in and the button redirects to
+                // UserInfoActivity.
+                if (userint == 1) {
+                    startActivity(new Intent(getApplicationContext(), UserInfoActivity.class));
+                } else {
+                    //If userint is not 1, the user is not signed in and the button redirects to
+                    // the sign in page.
+                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                }
                 finish();
                 return (true);
         }
@@ -73,5 +93,35 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+    //Standard Firebase code.
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    //Standard Firebase code.
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    //Standard Firebase code. Removed the else from the if clause.
+    private void auth() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //If user is signed in, userint is set to 1.
+                    userint = 1;
+                }
+            }
+        };
     }
 }

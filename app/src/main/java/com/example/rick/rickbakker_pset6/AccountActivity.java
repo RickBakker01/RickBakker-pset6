@@ -13,7 +13,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class AccountActivity extends AppCompatActivity {
@@ -26,8 +25,6 @@ public class AccountActivity extends AppCompatActivity {
 
     //Standard Firebase code.
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,40 +44,6 @@ public class AccountActivity extends AppCompatActivity {
 
         //Standard Firebase code.
         mAuth = FirebaseAuth.getInstance();
-        //auth-method is called.
-        auth();
-    }
-
-    //Standard Firebase code. Removed else from if clause.
-    private void auth() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    //If user is signed in, pressing the login button redirects user to the
-                    // UserInfoActivity
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), UserInfoActivity.class));
-                }
-            }
-        };
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     //Standard Firebase code.
@@ -94,6 +57,8 @@ public class AccountActivity extends AppCompatActivity {
                 Bundle bundle = intent.getExtras();
                 //If the bundle is empty, user signed in via home.
                 if (bundle == null) {
+                    Toast.makeText(getApplicationContext(), R.string.sign_in_successful, Toast
+                            .LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
@@ -101,6 +66,8 @@ public class AccountActivity extends AppCompatActivity {
                     // and must be redirected back to the personal moodlist after the user signed
                     // in.
                 } else {
+                    Toast.makeText(getApplicationContext(), R.string.sign_in_successful, Toast
+                            .LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
                 }
@@ -140,6 +107,7 @@ public class AccountActivity extends AppCompatActivity {
                     // RegisterActivity is started.
                     if (bundle != null) {
                         int userSignIn = 1;
+                        finish();
                         startActivity(new Intent(getApplicationContext(), RegisterActivity.class)
                                 .putExtra("user", userSignIn));
                         //If the bundle is empty, user is edirected to registration from the

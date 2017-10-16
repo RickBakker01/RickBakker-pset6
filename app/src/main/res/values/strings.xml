@@ -9,6 +9,7 @@
     <string name="empty">Please fill in your email and password</string>
     <string name="sign_out">Successfully signed out</string>
     <string name="sign_in_failed">Failed to sign in, please try again</string>
+    <string name="sign_in_successful">Successfully signed in</string>
 
     <!-- Strings from bottom navigation -->
     <string name="home">home</string>

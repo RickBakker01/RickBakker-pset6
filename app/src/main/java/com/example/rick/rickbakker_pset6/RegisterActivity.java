@@ -102,8 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
             //Get the strings from the email and password EditTexts
             String email = mEmail.getText().toString();
             String password = mPassword.getText().toString();
-            if (mPassword.length() > 6) {
-                //If password is longer than 6 characters, continue.
+            if (mPassword.length() > 6 && !email.matches("")) {
+                //If password is longer than 6 characters and your email is filled in, continue.
                 if (Objects.equals(mPassword.getText().toString(), mPasswordConfirm.getText()
                         //If password equals to the confirmed password, create user.
                         .toString())) {
