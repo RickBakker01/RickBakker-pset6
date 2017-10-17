@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.HashMap;
+
 public class MoodsActivity extends AppCompatActivity {
 
     Button test;
@@ -66,6 +68,12 @@ public class MoodsActivity extends AppCompatActivity {
     public void moodSearch() {
         TrackAsyncTask asyncTask = new TrackAsyncTask(this);
         asyncTask.execute(aMood);
+    }
+
+    public void moodStartIntent(HashMap moodPaintings) {
+        Intent dataIntent = new Intent(this, MyMoodActivity.class);
+        dataIntent.putExtra("data", moodPaintings);
+        this.startActivity(dataIntent);
     }
 
     public class myListener implements View.OnClickListener {

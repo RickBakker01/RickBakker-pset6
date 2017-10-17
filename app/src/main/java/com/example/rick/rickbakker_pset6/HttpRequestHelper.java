@@ -18,9 +18,9 @@ public class HttpRequestHelper {
         String result = "";
         String color = params[0];
 
-        URL url = new URL("https://www.rijksmuseum" + "" + "" +
-                ".nl/api/nl/collection?key=pOArRxv7&format=json&type=schilderij&f" + "" + "" +
-                ".normalized32Colors.hex=" + color + "&imgonly=True&s=relevance");
+        URL url = new URL("https://www.rijksmuseum.nl/api/nl/collection?key=pOArRxv7&format=json"
+                + "&type=schilderij&f.normalized32Colors.hex=" + color +
+                "&imgonly=True&s=relevance");
         HttpURLConnection connect;
 
         try {
