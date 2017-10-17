@@ -6,9 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class MoodsActivity extends AppCompatActivity {
 
+    Button test;
+    String aMood = "";
     //Makes a new listener for the bottom navigation
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
@@ -47,6 +51,9 @@ public class MoodsActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.moods).setChecked(true);
+
+        test = (Button) findViewById(R.id.TEST);
+        test.setOnClickListener(new myListener());
     }
 
     //If the back button is pressed, the application goes to MainActivity.
@@ -54,5 +61,22 @@ public class MoodsActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    public void moodSearch() {
+        TrackAsyncTask asyncTask = new TrackAsyncTask(this);
+        asyncTask.execute(aMood);
+    }
+
+    public class myListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.TEST:
+                    aMood = "%20%23000000";
+                    moodSearch();
+                    break;
+            }
+        }
     }
 }
