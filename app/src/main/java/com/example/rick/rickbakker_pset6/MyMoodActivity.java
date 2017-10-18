@@ -9,14 +9,9 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class MyMoodActivity extends AppCompatActivity {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
     //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -62,16 +57,6 @@ public class MyMoodActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //auth-method is called.
         auth();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference myRef = database.getReference(userId);
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("data")) {
-            HashMap<String, String> hashMap = (HashMap<String, String>) intent
-                    .getSerializableExtra("data");
-            myRef.setValue(hashMap);
-        }
     }
 
     //Standard Firebase code. Removed else from if clause.

@@ -1,13 +1,21 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
@@ -15,6 +23,17 @@ public class MoodsActivity extends AppCompatActivity {
 
     Button test;
     String aMood = "";
+
+    int Loggedin = 0;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = null;
+    String userId = "";
+    FirebaseUser user2 = null;
+    //Standard Firebase code.
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+
     //Makes a new listener for the bottom navigation
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
@@ -56,6 +75,14 @@ public class MoodsActivity extends AppCompatActivity {
 
         test = (Button) findViewById(R.id.TEST);
         test.setOnClickListener(new myListener());
+
+        mAuth = FirebaseAuth.getInstance();
+        user2 = mAuth.getCurrentUser();
+        if (user2 != null) {
+            userId = user2.getUid();
+            myRef = database.getReference(userId);
+        }
+        auth();
     }
 
     //If the back button is pressed, the application goes to MainActivity.
@@ -71,9 +98,52 @@ public class MoodsActivity extends AppCompatActivity {
     }
 
     public void moodStartIntent(HashMap moodPaintings) {
-        Intent dataIntent = new Intent(this, MyMoodActivity.class);
-        dataIntent.putExtra("data", moodPaintings);
-        this.startActivity(dataIntent);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int i = prefs.getInt("paint_id", 0);
+
+        myRef.child(String.valueOf(i)).setValue(moodPaintings);
+    }
+
+    //Standard Firebase code. Removed else from if clause.
+    private void auth() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //If the user is signed in, a new int is given to the intent, and
+                    // AccountActivity is started.
+                    Loggedin = 1;
+                }
+            }
+        };
+    }
+
+    //Standard Firebase code.
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    //Standard Firebase code.
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    public void Check() {
+        if (Loggedin == 1) {
+            moodSearch();
+            startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
+            finish();
+        } else {
+            Toast.makeText(MoodsActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class myListener implements View.OnClickListener {
@@ -82,7 +152,7 @@ public class MoodsActivity extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.TEST:
                     aMood = "%20%23000000";
-                    moodSearch();
+                    Check();
                     break;
             }
         }
