@@ -18,21 +18,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Rick on 17-10-2017.
+ *
  */
 
 
-public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
+class MoodAsyncTask extends AsyncTask<String, Integer, String> {
 
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    Context context;
-    MoodsActivity moodsActivity;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String uid = user.getUid();
-    DatabaseReference ref = database.getReference(uid);
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private Context context;
+    private MoodsActivity moodsActivity;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String uid = user.getUid();
+    private DatabaseReference ref = database.getReference(uid);
 
-    public MoodAsyncTask(MoodsActivity mood) {
+    MoodAsyncTask(MoodsActivity mood) {
         this.moodsActivity = mood;
         this.context = this.moodsActivity.getApplicationContext();
     }
@@ -63,15 +63,12 @@ public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
             for (int i = 0; i < paintings.length(); i++) {
                 JSONObject paintingsOBJ = paintings.getJSONObject(i);
                 JSONObject urlobj = paintingsOBJ.getJSONObject("links");
-                JSONObject imageobj = paintingsOBJ.getJSONObject("webImage");
 
                 String title = paintingsOBJ.get("title").toString();
                 String maker = paintingsOBJ.get("principalOrFirstMaker").toString();
                 String paintingurl = urlobj.get("web").toString();
-                String imageurl = imageobj.get("url").toString();
 
-                paintingsmap.put(String.valueOf(i), new PaintingClass(title, maker, paintingurl,
-                        imageurl));
+                paintingsmap.put(String.valueOf(i), new PaintingClass(title, maker, paintingurl));
             }
         } catch (JSONException e) {
             e.printStackTrace();

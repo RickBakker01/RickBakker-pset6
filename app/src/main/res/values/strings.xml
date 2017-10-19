@@ -40,6 +40,8 @@
     <string name="user_info_header">You are currently logged in with your email address:</string>
     <string name="user">User</string>
     <string name="log_out">Log out</string>
+    <string name="title">title</string>
+    <string name="maker">maker</string>
 
 
 </resources>

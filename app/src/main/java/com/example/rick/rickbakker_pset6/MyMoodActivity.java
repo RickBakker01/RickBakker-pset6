@@ -1,13 +1,15 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,14 +19,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MyMoodActivity extends AppCompatActivity {
 
-    TextView tx;
-
-    String uid = "";
-
+    ArrayList<String> titleList = new ArrayList<>();
+    ArrayList<String> makerList = new ArrayList<>();
+    ArrayList<String> urlList = new ArrayList<>();
     ListView paintinglist;
-    String[] itemname = {"1", "2", "3"};
+
+    String[] titles = {};
+    String[] makers = {};
+    String[] urls = {};
+
+
     //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -66,17 +74,14 @@ public class MyMoodActivity extends AppCompatActivity {
         //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.my_mood).setChecked(true);
 
+        paintinglist = (ListView) findViewById(R.id.paintlist);
+
+        paintinglist.setOnItemLongClickListener(new clickLink());
         //Standard Firebase code
         mAuth = FirebaseAuth.getInstance();
         //auth-method is called.
         auth();
 
-
-        tx = (TextView) findViewById(R.id.textView);
-
-        PaintingListAdapter adapter = new PaintingListAdapter(this, itemname);
-        paintinglist = (ListView) findViewById(R.id.paintlist);
-        paintinglist.setAdapter(adapter);
 
     }
 
@@ -90,15 +95,20 @@ public class MyMoodActivity extends AppCompatActivity {
                     //If the user is not signed in, a new int is given to the intent, and
                     // AccountActivity is started.
                     int userSignIn = 1;
-                    startActivity(new Intent(getApplicationContext(), AccountActivity.class).putExtra("user", userSignIn));
+                    startActivity(new Intent(getApplicationContext(), AccountActivity.class)
+                            .putExtra("user", userSignIn));
                     finish();
                 } else {
-                    String uid = user.getUid();
                     collect();
-
                 }
             }
         };
+    }
+
+    public void adapter(String[] titles, String[] makers) {
+        PaintingListAdapter adapter = new PaintingListAdapter(this, titles, makers);
+        paintinglist = (ListView) findViewById(R.id.paintlist);
+        paintinglist.setAdapter(adapter);
     }
 
     //Standard Firebase code.
@@ -125,23 +135,49 @@ public class MyMoodActivity extends AppCompatActivity {
     }
 
     public void collect() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
         // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                PaintingClass post = dataSnapshot.child(uid).getValue(PaintingClass.class);
-                //Log.d("Iets", post.title);
-                tx.setText(post.title);
+                FirebaseUser user = mAuth.getCurrentUser();
+                //assert user != null;
+
+                assert user != null;
+                DataSnapshot paintings = dataSnapshot.child(user.getUid());
+                for (DataSnapshot painting : paintings.getChildren()) {
+                    PaintingClass paintingclass = painting.getValue(PaintingClass.class);
+                    String title = paintingclass.getTitle();
+                    String maker = paintingclass.getMaker();
+                    String url = paintingclass.getUrl();
+                    titleList.add(title);
+                    makerList.add(maker);
+                    urlList.add(url);
+                }
+
+                titles = titleList.toArray(new String[titleList.size()]);
+                makers = makerList.toArray(new String[makerList.size()]);
+                urls = urlList.toArray(new String[urlList.size()]);
+                adapter(titles, makers);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
-        });
+        };
+        ref.addValueEventListener(postListener);
 
+    }
+
+    private class clickLink implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urls[position])));
+            return true;
+        }
     }
 }
 

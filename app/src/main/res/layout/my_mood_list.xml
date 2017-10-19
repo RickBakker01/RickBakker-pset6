@@ -4,12 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/paintimg"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="5dp"/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,22 +13,18 @@
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:text="title"/>
+            android:text="@string/title"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/maker_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="maker"/>
+            android:layout_marginStart="10dp"
+            android:text="@string/maker"/>
 
-        <TextView
-            android:id="@+id/link_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="link"/>
     </LinearLayout>
 </LinearLayout>
