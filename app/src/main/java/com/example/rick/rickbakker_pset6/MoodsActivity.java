@@ -93,7 +93,7 @@ public class MoodsActivity extends AppCompatActivity {
     }
 
     public void moodSearch() {
-        TrackAsyncTask asyncTask = new TrackAsyncTask(this);
+        MoodAsyncTask asyncTask = new MoodAsyncTask(this);
         asyncTask.execute(aMood);
     }
 

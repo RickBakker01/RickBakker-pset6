@@ -17,13 +17,13 @@ import java.util.HashMap;
  * Created by Rick on 17-10-2017.
  */
 
-public class TrackAsyncTask extends AsyncTask<String, Integer, String> {
+public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
 
 
     Context context;
     MoodsActivity moodsActivity;
 
-    public TrackAsyncTask(MoodsActivity mood) {
+    public MoodAsyncTask(MoodsActivity mood) {
         this.moodsActivity = mood;
         this.context = this.moodsActivity.getApplicationContext();
     }

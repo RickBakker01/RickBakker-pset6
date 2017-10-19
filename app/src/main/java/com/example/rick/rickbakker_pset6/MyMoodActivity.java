@@ -6,11 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MyMoodActivity extends AppCompatActivity {
+
+
+    ListView paintinglist;
+    String[] itemname = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
+    //DatabaseReference MyRef = FirebaseDatabase.getInstance().getReference();
 
     //Standard Firebase code.
     private FirebaseAuth mAuth;
@@ -57,6 +64,12 @@ public class MyMoodActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //auth-method is called.
         auth();
+
+
+        PaintingListAdapter adapter = new PaintingListAdapter(this, itemname);
+        paintinglist = (ListView) findViewById(R.id.paintlist);
+        paintinglist.setAdapter(adapter);
+
     }
 
     //Standard Firebase code. Removed else from if clause.
@@ -66,7 +79,7 @@ public class MyMoodActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    //If the user is signed in, a new int is given to the intent, and
+                    //If the user is not signed in, a new int is given to the intent, and
                     // AccountActivity is started.
                     int userSignIn = 1;
                     startActivity(new Intent(getApplicationContext(), AccountActivity.class)
