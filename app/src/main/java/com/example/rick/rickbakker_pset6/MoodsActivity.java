@@ -1,9 +1,7 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-
 public class MoodsActivity extends AppCompatActivity {
 
     Button test;
@@ -29,6 +25,7 @@ public class MoodsActivity extends AppCompatActivity {
     DatabaseReference myRef = null;
     String userId = "";
     FirebaseUser user2 = null;
+
     //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -97,13 +94,6 @@ public class MoodsActivity extends AppCompatActivity {
         asyncTask.execute(aMood);
     }
 
-    public void moodStartIntent(HashMap moodPaintings) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int i = prefs.getInt("paint_id", 0);
-
-        myRef.child(String.valueOf(i)).setValue(moodPaintings);
-    }
 
     //Standard Firebase code. Removed else from if clause.
     private void auth() {
@@ -146,7 +136,7 @@ public class MoodsActivity extends AppCompatActivity {
         }
     }
 
-    public class myListener implements View.OnClickListener {
+    private class myListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {

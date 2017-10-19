@@ -1,10 +1,13 @@
 package com.example.rick.rickbakker_pset6;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,16 +15,22 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Rick on 17-10-2017.
  */
 
+
 public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
 
 
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
     Context context;
     MoodsActivity moodsActivity;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String uid = user.getUid();
+    DatabaseReference ref = database.getReference(uid);
 
     public MoodAsyncTask(MoodsActivity mood) {
         this.moodsActivity = mood;
@@ -46,8 +55,7 @@ public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        HashMap<String, String> paintingOBJ1 = new HashMap<>();
-        //HashMap<String, String> paintingOBJ2 = new HashMap<>();
+        Map<String, PaintingClass> paintingsmap = new HashMap<>();
         try {
             JSONObject Mainobj = new JSONObject(result);
             JSONArray paintings = Mainobj.getJSONArray("artObjects");
@@ -62,21 +70,12 @@ public class MoodAsyncTask extends AsyncTask<String, Integer, String> {
                 String paintingurl = urlobj.get("web").toString();
                 String imageurl = imageobj.get("url").toString();
 
-
-                paintingOBJ1.put("title", title);
-                paintingOBJ1.put("maker", maker);
-                paintingOBJ1.put("paintingurl", paintingurl);
-                paintingOBJ1.put("imageurl", imageurl);
-
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("paint_id", i);
-                editor.apply();
-                this.moodsActivity.moodStartIntent(paintingOBJ1);
+                paintingsmap.put(String.valueOf(i), new PaintingClass(title, maker, paintingurl,
+                        imageurl));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        ref.setValue(paintingsmap);
     }
 }

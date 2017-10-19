@@ -10,15 +10,17 @@ import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyMoodActivity extends AppCompatActivity {
 
 
     ListView paintinglist;
-    String[] itemname = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-
-    //DatabaseReference MyRef = FirebaseDatabase.getInstance().getReference();
-
+    String[] itemname = {"1", "2", "3"};
     //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -82,9 +84,12 @@ public class MyMoodActivity extends AppCompatActivity {
                     //If the user is not signed in, a new int is given to the intent, and
                     // AccountActivity is started.
                     int userSignIn = 1;
-                    startActivity(new Intent(getApplicationContext(), AccountActivity.class)
-                            .putExtra("user", userSignIn));
+                    startActivity(new Intent(getApplicationContext(), AccountActivity.class).putExtra("user", userSignIn));
                     finish();
+                } else {
+                    collect();
+
+
                 }
             }
         };
@@ -96,6 +101,7 @@ public class MyMoodActivity extends AppCompatActivity {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
 
     //Standard Firebase code.
     @Override
@@ -111,6 +117,37 @@ public class MyMoodActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+
+    public void collect() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Post post = dataSnapshot.getValue(Post.class);
+                System.out.println(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+    public static class Post {
+
+        public String author;
+        public String title;
+
+        public Post() {
+            // ...
+        }
+
     }
 }
 
