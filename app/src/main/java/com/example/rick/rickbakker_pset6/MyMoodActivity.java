@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MyMoodActivity extends AppCompatActivity {
 
+    TextView tx;
+
+    String uid = "";
 
     ListView paintinglist;
     String[] itemname = {"1", "2", "3"};
@@ -68,6 +72,8 @@ public class MyMoodActivity extends AppCompatActivity {
         auth();
 
 
+        tx = (TextView) findViewById(R.id.textView);
+
         PaintingListAdapter adapter = new PaintingListAdapter(this, itemname);
         paintinglist = (ListView) findViewById(R.id.paintlist);
         paintinglist.setAdapter(adapter);
@@ -87,8 +93,8 @@ public class MyMoodActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), AccountActivity.class).putExtra("user", userSignIn));
                     finish();
                 } else {
+                    String uid = user.getUid();
                     collect();
-
 
                 }
             }
@@ -101,7 +107,6 @@ public class MyMoodActivity extends AppCompatActivity {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-
 
     //Standard Firebase code.
     @Override
@@ -119,7 +124,6 @@ public class MyMoodActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-
     public void collect() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
@@ -128,25 +132,15 @@ public class MyMoodActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Post post = dataSnapshot.getValue(Post.class);
-                System.out.println(post);
+                PaintingClass post = dataSnapshot.child(uid).getValue(PaintingClass.class);
+                //Log.d("Iets", post.title);
+                tx.setText(post.title);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-    }
-
-    public static class Post {
-
-        public String author;
-        public String title;
-
-        public Post() {
-            // ...
-        }
 
     }
 }
