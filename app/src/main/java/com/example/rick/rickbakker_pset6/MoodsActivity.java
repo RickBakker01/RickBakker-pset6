@@ -17,10 +17,20 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MoodsActivity extends AppCompatActivity {
 
-    Button test;
+    Button black;
+    Button grey;
+    Button pink;
+    Button red;
+    Button yellow;
+    Button blue;
+    Button green;
+    Button orange;
+    Button purple;
+    Button brown;
+
     String aMood = "";
 
-    int Loggedin = 0;
+    int mLoggedin = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = null;
     String userId = "";
@@ -29,7 +39,6 @@ public class MoodsActivity extends AppCompatActivity {
     //Standard Firebase code.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
 
     //Makes a new listener for the bottom navigation
     private BottomNavigationView.OnNavigationItemSelectedListener
@@ -70,8 +79,9 @@ public class MoodsActivity extends AppCompatActivity {
         //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.moods).setChecked(true);
 
-        test = (Button) findViewById(R.id.TEST);
-        test.setOnClickListener(new myListener());
+
+        findButtons();
+        setListener();
 
         mAuth = FirebaseAuth.getInstance();
         user2 = mAuth.getCurrentUser();
@@ -104,20 +114,18 @@ public class MoodsActivity extends AppCompatActivity {
                 if (user != null) {
                     //If the user is signed in, a new int is given to the intent, and
                     // AccountActivity is started.
-                    Loggedin = 1;
+                    mLoggedin = 1;
                 }
             }
         };
     }
 
-    //Standard Firebase code.
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    //Standard Firebase code.
     @Override
     public void onStop() {
         super.onStop();
@@ -126,23 +134,85 @@ public class MoodsActivity extends AppCompatActivity {
         }
     }
 
-    public void Check() {
-        if (Loggedin == 1) {
+    public void check() {
+        if (mLoggedin == 1) {
             moodSearch();
             startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
             finish();
         } else {
-            Toast.makeText(MoodsActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MoodsActivity.this, R.string.login_first, Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void findButtons() {
+        black = (Button) findViewById(R.id.black);
+        grey = (Button) findViewById(R.id.grey);
+        pink = (Button) findViewById(R.id.pink);
+        red = (Button) findViewById(R.id.red);
+        yellow = (Button) findViewById(R.id.yellow);
+        blue = (Button) findViewById(R.id.blue);
+        green = (Button) findViewById(R.id.green);
+        orange = (Button) findViewById(R.id.orange);
+        purple = (Button) findViewById(R.id.purple);
+        brown = (Button) findViewById(R.id.brown);
+    }
+
+
+    public void setListener() {
+        black.setOnClickListener(new myListener());
+        grey.setOnClickListener(new myListener());
+        pink.setOnClickListener(new myListener());
+        red.setOnClickListener(new myListener());
+        yellow.setOnClickListener(new myListener());
+        blue.setOnClickListener(new myListener());
+        green.setOnClickListener(new myListener());
+        orange.setOnClickListener(new myListener());
+        purple.setOnClickListener(new myListener());
+        brown.setOnClickListener(new myListener());
+    }
     private class myListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.TEST:
+                case R.id.black:
                     aMood = "%20%23000000";
-                    Check();
+                    check();
+                    break;
+                case R.id.grey:
+                    aMood = "%20%232F4F4F";
+                    check();
+                    break;
+                case R.id.pink:
+                    aMood = "%20%23DF4C93";
+                    check();
+                    break;
+                case R.id.red:
+                    aMood = "%20%23981313";
+                    check();
+                    break;
+                case R.id.yellow:
+                    aMood = "%20%23FFEB00";
+                    check();
+                    break;
+                case R.id.blue:
+                    aMood = "%20%234019B1";
+                    check();
+                    break;
+                case R.id.green:
+                    aMood = "%20%23367614";
+                    check();
+                    break;
+                case R.id.orange:
+                    aMood = "%20%23E09714";
+                    check();
+                    break;
+                case R.id.purple:
+                    aMood = "%20%23850085";
+                    check();
+                    break;
+                case R.id.brown:
+                    aMood = "%20%23B35A1F";
+                    check();
                     break;
             }
         }

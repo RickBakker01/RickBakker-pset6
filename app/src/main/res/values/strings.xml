@@ -40,8 +40,26 @@
     <string name="user_info_header">You are currently logged in with your email address:</string>
     <string name="user">User</string>
     <string name="log_out">Log out</string>
+
+    <!-- Strings from my_mood_list -->
     <string name="title">title</string>
     <string name="maker">maker</string>
+
+    <!-- Strings from MoodsActivity -->
+    <string name="black">Sleepy</string>
+    <string name="grey">Gloomy</string>
+    <string name="white">Happy</string>
+    <string name="pink">Positive</string>
+    <string name="red">Passionate</string>
+    <string name="yellow">Nervous</string>
+    <string name="blue">Calm</string>
+    <string name="green">Bored</string>
+    <string name="orange">Proud</string>
+    <string name="purple">Scared</string>
+    <string name="brown">Humble</string>
+
+    <!-- Strings from MoodsActivity -->
+    <string name="login_first">Please login first</string>
 
 
 </resources>
