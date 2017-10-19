@@ -61,5 +61,7 @@
     <!-- Strings from MoodsActivity -->
     <string name="login_first">Please login first</string>
 
+    <!-- Strings from MoodAsyncTask -->
+    <string name="set_it">Setting the mood!</string>
 
 </resources>

@@ -11,18 +11,23 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/*
+ * This is the main activity. The app opens on this page. It starts with a bottom navigation bar.
+ * It also had a account button at the top. It decides whether a user is signed in or not. When
+ * signed in, the button redirects to UserInfoActivity.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-
     int userint = 0;
+
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
+
     //Makes a new listener for the bottom navigation.
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView
             .OnNavigationItemSelectedListener() {
-
-        Intent intent;
 
         //When a button is pressed from the bottom navigation, the switch decides which one.
         //With a new intent, a new activity is started.
@@ -30,13 +35,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.moods:
-                    intent = new Intent(getApplicationContext(), MoodsActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MoodsActivity.class));
                     finish();
                     break;
                 case R.id.my_mood:
-                    intent = new Intent(getApplicationContext(), MyMoodActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
                     finish();
                     break;
             }
@@ -88,29 +91,6 @@ public class MainActivity extends AppCompatActivity {
         return (super.onOptionsItemSelected(item));
     }
 
-    //If the back button is pressed, the application exits.
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
     //Standard Firebase code. Removed the else from the if clause.
     private void auth() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -123,5 +103,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    //If the back button is pressed, the application exits.
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

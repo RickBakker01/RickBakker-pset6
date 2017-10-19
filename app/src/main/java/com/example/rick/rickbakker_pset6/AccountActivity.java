@@ -14,6 +14,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * This activity handles the account. At first it shows a login and a register. You can login
+ * here or click on register. Then it takes you to RegisterActivity. This acctivity is not shown
+ * when logged in. Then UserInfoActivity is shown.
+ */
+
 public class AccountActivity extends AppCompatActivity {
 
     //Buttons and EditTexts are being called.
@@ -30,22 +36,18 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        //A new OnClickListener is added to the login and register button.
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new myListener());
 
         gotoregister = (Button) findViewById(R.id.gotoregister);
         gotoregister.setOnClickListener(new myListener());
 
-        //mEmail and mPassword are created.
         mEmail = (EditText) findViewById(R.id.user_email);
         mPassword = (EditText) findViewById(R.id.user_password);
 
-        //Standard Firebase code.
         mAuth = FirebaseAuth.getInstance();
     }
 
-    //Standard Firebase code.
     public void signIn(String email, final String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new
                 OnCompleteListener<AuthResult>() {
@@ -83,19 +85,16 @@ public class AccountActivity extends AppCompatActivity {
         });
     }
 
-    //If the back button is pressed, the application goes back to the MainActivity.
     @Override
     public void onBackPressed() {
         finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-    //A non-anonymous listener
     private class myListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                //When the register button is pressed.
                 case R.id.gotoregister:
                     //Create new intent and get extras from the intent.
                     Intent intent = getIntent();
@@ -116,9 +115,7 @@ public class AccountActivity extends AppCompatActivity {
                         break;
                     }
                     break;
-                //When the login button is pressed
                 case R.id.login:
-                    //Get the strings from the email and password EditTexts
                     String email = mEmail.getText().toString();
                     String password = mPassword.getText().toString();
                     //If email or password is empty, show a warning

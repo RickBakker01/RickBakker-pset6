@@ -8,12 +8,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by Rick on 17-10-2017.
+ * This class is the http request helper. It is based on pset-3. It helps getting the data.
  */
 
-public class HttpRequestHelper {
+class HttpRequestHelper {
 
-    protected static synchronized String downloadFromServer(String... params) throws
+    static synchronized String downloadFromServer(String... params) throws
             MalformedURLException {
         String result = "";
         String color = params[0];
@@ -39,7 +39,6 @@ public class HttpRequestHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 }

@@ -15,7 +15,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/*
+ * This is the MoodsActivity. It represents a big list of buttons and the buttons correspond to a
+  * mood.
+ */
+
 public class MoodsActivity extends AppCompatActivity {
+
+    int mLoggedin = 0;
 
     Button black;
     Button grey;
@@ -30,7 +37,6 @@ public class MoodsActivity extends AppCompatActivity {
 
     String aMood = "";
 
-    int mLoggedin = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = null;
     String userId = "";
@@ -45,28 +51,23 @@ public class MoodsActivity extends AppCompatActivity {
             mOnNavigationItemSelectedListener = new BottomNavigationView
             .OnNavigationItemSelectedListener() {
 
-        Intent intent;
-
         //When a button is pressed from the bottom navigation, the switch decides which one.
         //With a new intent, a new activity is started.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.home:
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                     break;
                 case R.id.my_mood:
-                    intent = new Intent(getApplicationContext(), MyMoodActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
                     finish();
                     break;
             }
             return false;
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class MoodsActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //The right navigation button is checked.
         navigation.getMenu().findItem(R.id.moods).setChecked(true);
-
 
         findButtons();
         setListener();
@@ -92,18 +92,31 @@ public class MoodsActivity extends AppCompatActivity {
         auth();
     }
 
-    //If the back button is pressed, the application goes to MainActivity.
-    @Override
-    public void onBackPressed() {
-        finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    public void findButtons() {
+        black = (Button) findViewById(R.id.black);
+        grey = (Button) findViewById(R.id.grey);
+        pink = (Button) findViewById(R.id.pink);
+        red = (Button) findViewById(R.id.red);
+        yellow = (Button) findViewById(R.id.yellow);
+        blue = (Button) findViewById(R.id.blue);
+        green = (Button) findViewById(R.id.green);
+        orange = (Button) findViewById(R.id.orange);
+        purple = (Button) findViewById(R.id.purple);
+        brown = (Button) findViewById(R.id.brown);
     }
 
-    public void moodSearch() {
-        MoodAsyncTask asyncTask = new MoodAsyncTask(this);
-        asyncTask.execute(aMood);
+    public void setListener() {
+        black.setOnClickListener(new myListener());
+        grey.setOnClickListener(new myListener());
+        pink.setOnClickListener(new myListener());
+        red.setOnClickListener(new myListener());
+        yellow.setOnClickListener(new myListener());
+        blue.setOnClickListener(new myListener());
+        green.setOnClickListener(new myListener());
+        orange.setOnClickListener(new myListener());
+        purple.setOnClickListener(new myListener());
+        brown.setOnClickListener(new myListener());
     }
-
 
     //Standard Firebase code. Removed else from if clause.
     private void auth() {
@@ -120,6 +133,22 @@ public class MoodsActivity extends AppCompatActivity {
         };
     }
 
+    public void check() {
+        if (mLoggedin == 1) {
+            moodSearch();
+            startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
+            finish();
+        } else {
+            Toast.makeText(MoodsActivity.this, R.string.login_first, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void moodSearch() {
+        MoodAsyncTask asyncTask = new MoodAsyncTask(this);
+        asyncTask.execute(aMood);
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -134,42 +163,12 @@ public class MoodsActivity extends AppCompatActivity {
         }
     }
 
-    public void check() {
-        if (mLoggedin == 1) {
-            moodSearch();
-            startActivity(new Intent(getApplicationContext(), MyMoodActivity.class));
-            finish();
-        } else {
-            Toast.makeText(MoodsActivity.this, R.string.login_first, Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-    public void findButtons() {
-        black = (Button) findViewById(R.id.black);
-        grey = (Button) findViewById(R.id.grey);
-        pink = (Button) findViewById(R.id.pink);
-        red = (Button) findViewById(R.id.red);
-        yellow = (Button) findViewById(R.id.yellow);
-        blue = (Button) findViewById(R.id.blue);
-        green = (Button) findViewById(R.id.green);
-        orange = (Button) findViewById(R.id.orange);
-        purple = (Button) findViewById(R.id.purple);
-        brown = (Button) findViewById(R.id.brown);
-    }
-
-
-    public void setListener() {
-        black.setOnClickListener(new myListener());
-        grey.setOnClickListener(new myListener());
-        pink.setOnClickListener(new myListener());
-        red.setOnClickListener(new myListener());
-        yellow.setOnClickListener(new myListener());
-        blue.setOnClickListener(new myListener());
-        green.setOnClickListener(new myListener());
-        orange.setOnClickListener(new myListener());
-        purple.setOnClickListener(new myListener());
-        brown.setOnClickListener(new myListener());
-    }
     private class myListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {

@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 /**
- *
+ * this is the custom adapter, specially made for the app.
  */
 
 class PaintingListAdapter extends ArrayAdapter<Object> {
@@ -19,6 +18,7 @@ class PaintingListAdapter extends ArrayAdapter<Object> {
     private final String[] titles;
     private final String[] makers;
 
+    //New adapter that takes the titles and makers of the paintings
     PaintingListAdapter(Activity context, String[] titles, String[] makers) {
         super(context, R.layout.my_mood_list, titles);
 

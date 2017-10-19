@@ -21,17 +21,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/*
+ * This activity is showing the paintings you have selected with your mood. When nog logged in,
+ * you will be redirected to the login page. This activity also holds the adapter.
+ */
+
 public class MyMoodActivity extends AppCompatActivity {
 
     ArrayList<String> titleList = new ArrayList<>();
     ArrayList<String> makerList = new ArrayList<>();
     ArrayList<String> urlList = new ArrayList<>();
+
     ListView paintinglist;
 
     String[] titles = {};
     String[] makers = {};
     String[] urls = {};
-
 
     //Standard Firebase code.
     private FirebaseAuth mAuth;
@@ -41,21 +46,17 @@ public class MyMoodActivity extends AppCompatActivity {
             mOnNavigationItemSelectedListener = new BottomNavigationView
             .OnNavigationItemSelectedListener() {
 
-        Intent intent;
-
         //When a button is pressed from the bottom navigation, the switch decides which one.
         //With a new intent, a new activity is started.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.home:
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                     break;
                 case R.id.moods:
-                    intent = new Intent(getApplicationContext(), MoodsActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), MoodsActivity.class));
                     finish();
                     break;
             }
@@ -75,14 +76,12 @@ public class MyMoodActivity extends AppCompatActivity {
         navigation.getMenu().findItem(R.id.my_mood).setChecked(true);
 
         paintinglist = (ListView) findViewById(R.id.paintlist);
-
         paintinglist.setOnItemLongClickListener(new clickLink());
+
         //Standard Firebase code
         mAuth = FirebaseAuth.getInstance();
         //auth-method is called.
         auth();
-
-
     }
 
     //Standard Firebase code. Removed else from if clause.
@@ -105,45 +104,16 @@ public class MyMoodActivity extends AppCompatActivity {
         };
     }
 
-    public void adapter(String[] titles, String[] makers) {
-        PaintingListAdapter adapter = new PaintingListAdapter(this, titles, makers);
-        paintinglist = (ListView) findViewById(R.id.paintlist);
-        paintinglist.setAdapter(adapter);
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    //Standard Firebase code.
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-    //If the back button is pressed, the application goes to MainActivity.
-    @Override
-    public void onBackPressed() {
-        finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-    }
-
+    //Get data from database
     public void collect() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
-        // Attach a listener to read the data at our posts reference
+        // Attach a listener to read the data
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                //assert user != null;
 
                 assert user != null;
                 DataSnapshot paintings = dataSnapshot.child(user.getUid());
@@ -152,11 +122,14 @@ public class MyMoodActivity extends AppCompatActivity {
                     String title = paintingclass.getTitle();
                     String maker = paintingclass.getMaker();
                     String url = paintingclass.getUrl();
+
+                    //Add data to a list
                     titleList.add(title);
                     makerList.add(maker);
                     urlList.add(url);
                 }
 
+                //Convert list to string array for adapter
                 titles = titleList.toArray(new String[titleList.size()]);
                 makers = makerList.toArray(new String[makerList.size()]);
                 urls = urlList.toArray(new String[urlList.size()]);
@@ -169,9 +142,36 @@ public class MyMoodActivity extends AppCompatActivity {
             }
         };
         ref.addValueEventListener(postListener);
-
     }
 
+    //Set the adapter
+    public void adapter(String[] titles, String[] makers) {
+        PaintingListAdapter adapter = new PaintingListAdapter(this, titles, makers);
+        paintinglist = (ListView) findViewById(R.id.paintlist);
+        paintinglist.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    //On long click, the app opens a browser with a url to the webpage of the selected painting.
     private class clickLink implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

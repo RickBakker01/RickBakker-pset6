@@ -16,15 +16,18 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+/*
+ * This is the registration activity. It handles the registration of a user. The actvity also
+ * makes sure there is no error in de registration.
+ */
+
 public class RegisterActivity extends AppCompatActivity {
 
-    //Button and EditTexts are being called.
+    Button register;
     EditText mEmail;
     EditText mPassword;
     EditText mPasswordConfirm;
-    Button register;
 
-    //Standard Firebase code.
     private FirebaseAuth mAuth;
 
     @Override
@@ -32,27 +35,22 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //A new OnClickListener is added to the register button.
         register = (Button) findViewById(R.id.register);
         register.setOnClickListener(new myListener());
 
-        //mEmail, mPassword and mPasswordConfirm are created.
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mPasswordConfirm = (EditText) findViewById(R.id.password_confirm);
 
-        //Standard Firebase code.
         mAuth = FirebaseAuth.getInstance();
     }
 
-    //Standard Firebase code.
     public void createAccount(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new
                 OnCompleteListener<AuthResult>() {
             @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ConstantConditions"})
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
                 //If sign in fails, display a message to the user. If sign in succeeds
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.

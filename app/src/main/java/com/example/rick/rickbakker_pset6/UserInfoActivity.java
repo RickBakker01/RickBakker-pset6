@@ -11,32 +11,26 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/*
+ * This activity shows user info and a log out button. When a users clicks on it, the app signs
+ * out the user
+ */
+
 public class UserInfoActivity extends AppCompatActivity {
 
-    //Button and TextView are being called.
     TextView user_info_email;
     Button logout;
-
-    //Standard Firebase code.
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        //Standard Firebase code.
-        mAuth = FirebaseAuth.getInstance();
-
-        //A new OnClickListener is added to the logout button.
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new myListener());
 
-        //user_info_email is created.
         user_info_email = (TextView) findViewById(R.id.user_info_email);
 
-        //getCurrentUser-method is being called.
         getCurrentUser();
     }
 
