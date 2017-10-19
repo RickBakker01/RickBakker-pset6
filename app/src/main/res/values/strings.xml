@@ -46,6 +46,7 @@
     <string name="maker">maker</string>
 
     <!-- Strings from MoodsActivity -->
+    <string name="select_mood">Please select your current mood</string>
     <string name="black">Sleepy</string>
     <string name="grey">Gloomy</string>
     <string name="white">Happy</string>
