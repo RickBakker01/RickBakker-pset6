@@ -28,4 +28,6 @@ Decent
 # modularization
 Good modularization. requesthelper, paintingclass etc.
 
+# conclusion
+
 Next time, improve by shortening some code and make sure less is copied. Make a seperate class for the bottomnavigation.
