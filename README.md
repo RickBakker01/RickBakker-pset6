@@ -7,3 +7,5 @@ With this app you can create an account and select your current mood. The mood i
   ![Alt text](https://github.com/RickBakker01/RickBakker-pset6/blob/master/docs/2.jpg)  
   ![Alt text](https://github.com/RickBakker01/RickBakker-pset6/blob/master/docs/3.jpg)  
   ![Alt text](https://github.com/RickBakker01/RickBakker-pset6/blob/master/docs/4.jpg)
+  
+  [![BCH compliance](https://bettercodehub.com/edge/badge/RickBakker01/RickBakker-pset6?branch=master)](https://bettercodehub.com/)
