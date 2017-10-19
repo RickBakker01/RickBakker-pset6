@@ -128,7 +128,6 @@ public class MyMoodActivity extends AppCompatActivity {
                     makerList.add(maker);
                     urlList.add(url);
                 }
-
                 //Convert list to string array for adapter
                 titles = titleList.toArray(new String[titleList.size()]);
                 makers = makerList.toArray(new String[makerList.size()]);

@@ -91,41 +91,48 @@ public class AccountActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
+    public void register() {
+        //Create new intent and get extras from the intent.
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        //If the bundle is not empty, user is redirected to registration from the
+        // moodlist. A new int is given to an intent for further use, and
+        // RegisterActivity is started.
+        if (bundle != null) {
+            int userSignIn = 1;
+            finish();
+            startActivity(new Intent(getApplicationContext(), RegisterActivity.class).putExtra
+                    ("user", userSignIn));
+            //If the bundle is empty, user is edirected to registration from the
+            // normal AccountActivity, and RegisterActivity is started.
+        } else {
+            finish();
+            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+        }
+    }
+
+    public void login() {
+        String email = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
+        //If email or password is empty, show a warning
+        if (email.matches("") || password.matches("")) {
+            Toast.makeText(getApplicationContext(), R.string.empty, Toast.LENGTH_SHORT).show();
+        } else {
+            //When everything is fine, sign in.
+            signIn(email, password);
+        }
+    }
+
     private class myListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.gotoregister:
-                    //Create new intent and get extras from the intent.
-                    Intent intent = getIntent();
-                    Bundle bundle = intent.getExtras();
-                    //If the bundle is not empty, user is redirected to registration from the
-                    // moodlist. A new int is given to an intent for further use, and
-                    // RegisterActivity is started.
-                    if (bundle != null) {
-                        int userSignIn = 1;
-                        finish();
-                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class)
-                                .putExtra("user", userSignIn));
-                        //If the bundle is empty, user is edirected to registration from the
-                        // normal AccountActivity, and RegisterActivity is started.
-                    } else {
-                        finish();
-                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-                        break;
-                    }
+                    register();
                     break;
                 case R.id.login:
-                    String email = mEmail.getText().toString();
-                    String password = mPassword.getText().toString();
-                    //If email or password is empty, show a warning
-                    if (email.matches("") || password.matches("")) {
-                        Toast.makeText(getApplicationContext(), R.string.empty, Toast
-                                .LENGTH_SHORT).show();
-                    } else {
-                        //When everything is fine, sign in.
-                        signIn(email, password);
-                    }
+                    login();
+                    break;
             }
         }
     }
